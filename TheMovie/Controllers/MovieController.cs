@@ -100,7 +100,7 @@ namespace TheMovie.Controllers
                     readTask.Wait();
                 }
             }
-            return View("GetFaviriteMovie");
+            return View("Modal");
         }
 
         public ActionResult DeleteFavoriteMovie(Models.Movie movie)
@@ -126,7 +126,7 @@ namespace TheMovie.Controllers
                     readTask.Wait();
                 }
             }
-            return View("GetFaviriteMovie");
+            return View("Modal");
         }
     }
 }

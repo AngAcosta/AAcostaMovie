@@ -1,0 +1,35 @@
+﻿@model TheMovie.Models.Movie
+@{
+    ViewData["Title"] = "GetFaviriteMovie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Favoritos</h1>
+<br />
+
+<div class="container">
+    <div class="row-cols-2 row-cols-md-3">
+        @foreach (TheMovie.Models.Movie movie in Model.Movies)
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="@movie.Imagen" class="card-img-top" alt="">
+                        <div class="card-body">
+                            <p style="display:none">@movie.IdMovie</p>
+                            <h5 class="card-title">@movie.Nombre</h5> @*Titulo*@
+                            <p class="card-text">@movie.Descripcion</p>
+                            @using (Html.BeginForm("DeleteFavoriteMovie", "Movie",new { IdMovie = movie.IdMovie}))
+                            {
+                                <div class=col-md-3>
+                                    <input type='submit' value="Quitar de Favoritos" class="btn btn-danger" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+</div>

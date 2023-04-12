@@ -1,0 +1,54 @@
+﻿@model ML.Cine
+@{
+    ViewData["Title"] = "Venta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+	<div>
+		<h1>Venta</h1>
+	</div>
+
+	<div id="chartContainer" style="height: 370px; width: 50%;"></div>
+
+</div>
+
+@*AJAX*@
+@section Scripts{
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<scrpt src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></scrpt>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+
+var options = {
+	title: {
+		text: "Ventas por Zona"
+	},
+	animationEnabled: true,
+	data: [{
+		type: "pie",
+		startAngle: 40,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		showInLegend: "true",
+		legendText: "{label}",
+		indexLabelFontSize: 16,
+		indexLabel: "{label} - {y}%",
+		dataPoints: [
+			{ y: @Model.porcentajeN, label: "Norte" },
+			{ y: @Model.porcentajeS, label: "Sur" },
+			{ y: @Model.porcentajeE, label: "Este" },
+			{ y: @Model.porcentajeO, label: "Oeste" }
+		]
+	}]
+};
+$("#chartContainer").CanvasJSChart(options);
+
+}  
+</script>
+}

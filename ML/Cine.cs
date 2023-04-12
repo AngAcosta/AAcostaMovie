@@ -21,5 +21,13 @@ namespace ML
         public ML.Zona Zona { get; set; }
 
         public List<object> Cines { get; set; }
+
+        public decimal porcentajeN { get; set; }
+
+        public decimal porcentajeS { get; set; }
+        
+        public decimal porcentajeE { get; set; }
+        
+        public decimal porcentajeO { get; set; }
     }
 }

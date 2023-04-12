@@ -174,5 +174,77 @@ namespace BL
             }
             return result;
         }
+
+        public static ML.Result Porcentaje()
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL.AacostaCineContext context = new DL.AacostaCineContext())
+                {
+                    var query = context.Cines.FromSqlRaw("CineGetAll").ToList();
+
+                    if (query != null)
+                    {
+                        ML.Cine cine = new ML.Cine();
+                        cine.Zona = new ML.Zona();
+
+                        decimal sumatotal = 0, sumat;
+                        decimal sumanorte = 0, suman;
+                        decimal sumasur = 0, sumas;
+                        decimal sumaeste = 0, sumae;
+                        decimal sumaoeste = 0, sumao;
+
+                        result.Objects = new List<object>();
+                        foreach (var obj in query)
+                        {
+                            sumatotal += obj.Venta.Value;
+
+                            if (obj.IdZona == 1)
+                            {
+                                sumanorte += obj.Venta.Value;
+                            }
+                            if (obj.IdZona == 2)
+                            {
+                                sumasur += obj.Venta.Value;
+                            }
+                            if (obj.IdZona == 3)
+                            {
+                                sumaeste += obj.Venta.Value;
+
+                            }
+                            if (obj.IdZona == 4)
+                            {
+
+                                sumaoeste += obj.Venta.Value;
+
+                            }
+                        }
+
+                        sumat = sumatotal;
+                        suman = sumanorte;
+                        sumas = sumasur;
+                        sumae = sumaeste;
+                        sumao = sumaoeste;
+
+                        cine.porcentajeN = suman / sumat * 100;
+                        cine.porcentajeS = sumas / sumat * 100;
+                        cine.porcentajeE = sumae / sumat * 100;
+                        cine.porcentajeO = sumao / sumat * 100;
+
+                        result.Object = cine;
+                        //porcentajeT = porcentajeN + porcentajeS + porcentajeE + porcentajeO;
+                    }
+                    result.Correct = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return result;
+        }
     }
 }

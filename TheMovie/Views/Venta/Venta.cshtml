@@ -5,11 +5,25 @@
 }
 
 <div class="container">
-	<div>
-		<h1>Venta</h1>
-	</div>
+    <div>
+        <h1>Venta</h1>
+    </div>
 
-	<div id="chartContainer" style="height: 370px; width: 50%;"></div>
+
+    <div class="row">
+
+        <div id="chartContainer" style="height: 370px; width: 50%;"></div>
+        <br />
+
+        <div id="map"></div>
+        <style>
+            #map {
+                height: 400px; /* The height is 400 pixels */
+                width: 50%; /* The width is the width of the web page */
+            }
+        </style>
+
+    </div>
 
 </div>
 
@@ -23,32 +37,71 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSKBDdPPlfca_zTwyxKiicRQn1qfgRjLw&callback=initMap"></script>
 <script type="text/javascript">
-    window.onload = function () {
+                window.onload = function () {
 
-var options = {
-	title: {
-		text: "Ventas por Zona"
-	},
-	animationEnabled: true,
-	data: [{
-		type: "pie",
-		startAngle: 40,
-		toolTipContent: "<b>{label}</b>: {y}%",
-		showInLegend: "true",
-		legendText: "{label}",
-		indexLabelFontSize: 16,
-		indexLabel: "{label} - {y}%",
-		dataPoints: [
-			{ y: @Model.porcentajeN, label: "Norte" },
-			{ y: @Model.porcentajeS, label: "Sur" },
-			{ y: @Model.porcentajeE, label: "Este" },
-			{ y: @Model.porcentajeO, label: "Oeste" }
-		]
-	}]
-};
-$("#chartContainer").CanvasJSChart(options);
+            var options = {
+                title: {
+                    text: "Ventas por Zona"
+                },
+                animationEnabled: true,
+                data: [{
+                    type: "pie",
+                    startAngle: 40,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [
+                        { y: @Model.porcentajeN, label: "Norte" },
+                        { y: @Model.porcentajeS, label: "Sur" },
+                        { y: @Model.porcentajeE, label: "Este" },
+                        { y: @Model.porcentajeO, label: "Oeste" }
+                    ]
+                }]
+            };
+            $("#chartContainer").CanvasJSChart(options);
 
-}  
+            }
+
+
+    //Maps
+
+function initMap() {
+    const myLatlng = { lat: 19.439, lng: -99.134 };
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 11,
+        center: myLatlng,
+    });
+
+    @foreach(ML.Cine cine in Model.Cines)
+    {
+        <text>
+        var contentString = '<div id="content">' +
+        '<div id="siteNotice">' +
+        '</div>' +
+        'Direccion: ' + '@cine.Direccion' +
+        '<div id="bodyContent">' +
+        'Venta:' + '@cine.Venta' + "<br>" +
+        'Zona:' + '@cine.Zona.Nombre' + "<br>" +
+        'IdCine:' + '@cine.IdCine' + "<br>" +
+        '</div>' +
+        '</div>';
+        
+        var marker_@cine.IdCine = new google.maps.Marker({ position: { lat:@cine.Latitud, lng: @cine.Longitud }, map: map });
+        (marker_@cine.IdCine).addListener("click", function () {
+        (infoWindow_@cine.IdCine).open(map, marker_@cine.IdCine);
+        (infoWindow_@cine.IdCine).open(map, marker_@cine.IdCine);
+        });
+
+        var infoWindow_@cine.IdCine = new google.maps.InfoWindow({
+            content: contentString,
+            ariaLabel: "Punto de Venta",
+        })
+        </text>
+    }
+}
 </script>
 }
